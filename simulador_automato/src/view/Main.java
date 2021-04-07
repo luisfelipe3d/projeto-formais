@@ -8,6 +8,7 @@ public class Main {
             menu();
             opcao = in.nextInt();
         } while(opcao != 0);
+        in.close();
     }
 
     public static void menu(){
