@@ -4,14 +4,14 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.Collections;
 
-public class AFD {
-    // AFD referencia cada estado de um autômato
+public class EF {
+    // EF referencia cada estado finito de um autômato
     private final String nomeEstado;
     private final boolean estadoInicial;
     private final boolean estadoFinal;
     private final Map<String, String> funcaoTransicao;
 
-    public AFD(String nomeEstado, boolean estadoInicial, boolean estadoFinal) {
+    public EF(String nomeEstado, boolean estadoInicial, boolean estadoFinal) {
         this.nomeEstado = nomeEstado;
         this.estadoInicial = estadoInicial;
         this.estadoFinal = estadoFinal;
@@ -40,6 +40,6 @@ public class AFD {
 
     @Override
     public String toString() {
-        return "AFD{" + "nomeEstado=" + nomeEstado + ", estadoInicial=" + estadoInicial + ", estadoFinal=" + estadoFinal + ", funcaoTransicao=" + funcaoTransicao + '}';
+        return "nomeEstado=" + nomeEstado + ", estadoInicial=" + estadoInicial + ", estadoFinal=" + estadoFinal + ", funcaoTransicao=" + funcaoTransicao;
     }    
 }
