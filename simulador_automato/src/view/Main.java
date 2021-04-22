@@ -1,25 +1,54 @@
-import java.util.Scanner;
+package view;
 
+import java.util.List;
+import java.util.Scanner;
 import controller.AFDControlador;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner in = new Scanner(System.in);
-        int opcao;
-        do{
-            menu();
-            opcao = in.nextInt();
-        } while(opcao != 0);
-        in.close();
-        AFDControlador controller = new AFDControlador();
+    private static final String ACCEPTED = "Cadeia aceita!";
+    private static final String REJECTED = "Cadeia rejeitada!";
+    private static AFDControlador controlador = new AFDControlador();
+    private static Scanner in = new Scanner(System.in);
 
-//        exemplo de chamada do controlador:
-//        System.out.println(controller.validarCadeia("1101"));
-//        toda saída de dados deve ser feita exclusivamente na view
+    public static void main(String[] args) {
+        int opcao;
+        controlador.lerArquivoJSON();
+        imprimirAutomato(controlador.getAFD());
+
+        do {
+            menuPrincipal();
+            opcao = in.nextInt();
+            switch (opcao) {
+                case 0:
+                    break;
+                case 1:
+                    validarCadeia();
+                    break;
+                default:
+                    System.err.println("Opção inválida");
+            }
+        } while (opcao != 0);
+        in.close();
     }
 
-    public static void menu(){
-        System.out.println("1 - Validar cadeia de caracter");
+    public static void menuPrincipal() {
+        System.out.println("1 - Validar cadeia de elementos");
         System.out.println("0 - Encerrar");
+        System.out.print("Escolha a opção desejada: ");
+    }
+    
+    public static void validarCadeia() {
+        System.out.print("Informe a cadeia: ");
+        String cadeia = in.next(); in.nextLine();
+        String resultado = controlador.validarCadeia(cadeia) ? ACCEPTED : REJECTED;
+        
+        System.out.println(resultado);
+    }
+    
+    public static void imprimirAutomato(List automatoLido) {
+        System.out.println("Alfabeto da linguagem: " + controlador.getAlfabetoLinguagem());
+        for (int i = 0; i < automatoLido.size(); i++) {
+            System.out.println(automatoLido.get(i));
+        }
     }
 }
