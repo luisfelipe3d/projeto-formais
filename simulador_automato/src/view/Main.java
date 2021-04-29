@@ -3,32 +3,34 @@ package view;
 import java.util.List;
 import java.util.Scanner;
 import controller.AFDControlador;
+import java.io.File;
 
 public class Main {
     private static final String ACCEPTED = "Cadeia aceita!";
     private static final String REJECTED = "Cadeia rejeitada!";
     private static AFDControlador controlador = new AFDControlador();
     private static Scanner in = new Scanner(System.in);
-    private static final String arq2= "src/misc/automato2.json";
+    private static final String arq2= "src"+File.separator+
+            "misc"+File.separator+"automato2.json";
     
     public static void main(String[] args) {
         int opcao;
         controlador.lerArquivoJSON(arq2);
         imprimirAutomato(controlador.getAFD());
 
-        do {
-            menuPrincipal();
-            opcao = in.nextInt();
-            switch (opcao) {
-                case 0:
-                    break;
-                case 1:
-                    validarCadeia();
-                    break;
-                default:
-                    System.err.println("Opção inválida");
-            }
-        } while (opcao != 0);
+//        do {
+//            menuPrincipal();
+//            opcao = in.nextInt();
+//            switch (opcao) {
+//                case 0:
+//                    break;
+//                case 1:
+//                    validarCadeia();
+//                    break;
+//                default:
+//                    System.err.println("Opção inválida");
+//            }
+//        } while (opcao != 0);
         in.close();
     }
 
