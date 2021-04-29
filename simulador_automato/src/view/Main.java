@@ -9,10 +9,11 @@ public class Main {
     private static final String REJECTED = "Cadeia rejeitada!";
     private static AFDControlador controlador = new AFDControlador();
     private static Scanner in = new Scanner(System.in);
-
+    private static final String arq2= "src/misc/automato2.json";
+    
     public static void main(String[] args) {
         int opcao;
-        controlador.lerArquivoJSON();
+        controlador.lerArquivoJSON(arq2);
         imprimirAutomato(controlador.getAFD());
 
         do {

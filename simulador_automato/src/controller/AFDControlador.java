@@ -23,11 +23,11 @@ public class AFDControlador {
     //funcaoTransicaoEstadoAtual mapeia as funções de transição de um determinado estado
     private Map<String, String> funcaoTransicaoEstadoAtual = new HashMap();
     
-    public void lerArquivoJSON() {
+    public void lerArquivoJSON(String caminho) {
         JSONParser parser = new JSONParser();
         
         try {
-            FileReader arquivoJSON = new FileReader("src/misc/automato2.json");
+            FileReader arquivoJSON = new FileReader(caminho);
             JSONObject objetoJSON = (JSONObject) parser.parse(arquivoJSON);            
             criarAutomato(objetoJSON);            
         } catch (IOException ex) {
