@@ -20,7 +20,7 @@ public class AFDControlador {
     private String alfabetoLinguagem;
 
     //AFD é uma lista com todos os estados de um autômato
-    private List<EF> AFD = new ArrayList();
+    private final List<EF> AFD = new ArrayList();
 
     //funcaoTransicaoEstadoAtual mapeia as funções de transição de um determinado estado
     private Map<String, String> funcaoTransicaoEstadoAtual = new HashMap();
