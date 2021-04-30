@@ -13,9 +13,8 @@ public class Main {
     private static final AFDControlador controlador = new AFDControlador();
 
     public static void main(String[] args) {
-        int opcao = 1;        
-        controlador.lerArquivoJSON();
-        imprimirAutomato(controlador.getAFD());
+        int opcao = 1;
+        argumentoMain(args);
         do {
             try {
                 menuPrincipal();
@@ -57,5 +56,14 @@ public class Main {
         for (int i = 0; i < automatoLido.size(); i++) {
             System.out.println(automatoLido.get(i));
         }
+    }
+    
+    public static void argumentoMain(String[] arg){
+        if(arg.length == 0){
+            controlador.lerArquivoJSON();
+        } else if(arg.length == 1){
+            controlador.lerArquivoJSON(arg[0]);
+        }
+        imprimirAutomato(controlador.getAFD());
     }
 }

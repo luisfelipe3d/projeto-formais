@@ -8,7 +8,12 @@ import java.util.ArrayList;
 import java.io.InputStream;
 import java.util.Collections;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import java.util.stream.Collectors;
@@ -25,6 +30,20 @@ public class AFDControlador {
     //funcaoTransicaoEstadoAtual mapeia as funções de transição de um determinado estado
     private Map<String, String> funcaoTransicaoEstadoAtual = new HashMap();
 
+    public void lerArquivoJSON(String caminho){
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader arquivoJSON = new FileReader(caminho);
+            JSONObject objetoJSON = (JSONObject) parser.parse(arquivoJSON);
+            criarAutomato(objetoJSON);
+        } catch (ParseException ex) {
+            System.err.println("org.json.ParseException: " + ex.getMessage());
+        } catch (FileNotFoundException ex) {
+            System.err.println(ex.getMessage());
+        } catch (IOException ex) {
+            System.err.println(ex.getMessage());
+        }
+    }
     public void lerArquivoJSON() {
         //acessa e lê o arquivo a partir do resources
         InputStream inputStream = getClass().getResourceAsStream("/automato2.json");
