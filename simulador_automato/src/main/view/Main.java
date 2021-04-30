@@ -1,12 +1,12 @@
-package view;
+package main.view;
 
 import java.util.List;
 import java.util.Scanner;
-import controller.AFDControlador;
+import main.controller.AFDControlador;
 
 public class Main {
-    private static final String ACCEPTED = "Cadeia aceita!";
-    private static final String REJECTED = "Cadeia rejeitada!";
+    private static final String ACCEPTED = "CADEIA ACEITA!";
+    private static final String REJECTED = "CADEIA REJEITADA!";
     private static AFDControlador controlador = new AFDControlador();
     private static Scanner in = new Scanner(System.in);
 
