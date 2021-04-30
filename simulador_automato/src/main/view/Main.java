@@ -1,9 +1,11 @@
 package main.view;
 
+import main.controller.AFDControlador;
+
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-import main.controller.AFDControlador;
+
 
 public class Main {
     private static final Scanner in = new Scanner(System.in);
@@ -37,32 +39,41 @@ public class Main {
         in.close();
     }
 
-    public static void menuPrincipal() {
+    private static void menuPrincipal() {
         System.out.println("1 - Validar cadeia de elementos");
         System.out.println("0 - Encerrar");
         System.out.print("Escolha a opção desejada: ");
     }
     
+    private static String validarCadeia(String cadeia){
+        return controlador.validarCadeia(cadeia) ? ACCEPTED : REJECTED;
+    }
     public static void validarCadeia() {
         System.out.print("Informe a cadeia: ");
         String cadeia = in.next(); in.nextLine();
-        String resultado = controlador.validarCadeia(cadeia) ? ACCEPTED : REJECTED;
-        
-        System.out.println(resultado);
+        System.out.println(validarCadeia(cadeia));
     }
     
     public static void imprimirAutomato(List automatoLido) {
-        System.out.println("Alfabeto da linguagem: " + controlador.getAlfabetoLinguagem());
-        for (int i = 0; i < automatoLido.size(); i++) {
-            System.out.println(automatoLido.get(i));
-        }
+        final String alfabeto = controlador.getAlfabetoLinguagem();
+        System.out.println("Alfabeto da linguagem: " + alfabeto);
+        automatoLido.forEach(System.out::println);
     }
     
     private static void argumentoMain(String[] arg){
-        if(arg.length == 0){
-            controlador.lerArquivoJSON();
-        } else if(arg.length == 1){
-            controlador.lerArquivoJSON(arg[0]);
+        switch (arg.length) {
+            case 0:
+                controlador.lerArquivoJSON();
+                break;
+            case 1:
+                controlador.lerArquivoJSON(arg[0]);
+                break;
+            case 2:
+                controlador.lerArquivoJSON(arg[0]);
+                System.out.println(validarCadeia(arg[1]));
+                break;
+            default:
+                break;
         }
         imprimirAutomato(controlador.getAFD());
     }

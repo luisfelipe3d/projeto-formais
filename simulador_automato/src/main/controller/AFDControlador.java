@@ -1,22 +1,23 @@
 package main.controller;
 
 import main.model.EF;
+
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.io.InputStream;
 import java.util.Collections;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+import java.util.stream.Collectors;
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.FileNotFoundException;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import java.util.stream.Collectors;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
