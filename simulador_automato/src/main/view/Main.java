@@ -1,23 +1,24 @@
-package view;
+package main.view;
 
 import java.util.List;
 import java.util.Scanner;
-import controller.AFDControlador;
+import main.controller.AFDControlador;
 
 public class Main {
-    private static final String ACCEPTED = "Cadeia aceita!";
-    private static final String REJECTED = "Cadeia rejeitada!";
-    private static AFDControlador controlador = new AFDControlador();
-    private static Scanner in = new Scanner(System.in);
+    private static final Scanner in = new Scanner(System.in);
+    private static final String ACCEPTED = "CADEIA ACEITA!";
+    private static final String REJECTED = "CADEIA REJEITADA!";
+    private static final AFDControlador controlador = new AFDControlador();
 
     public static void main(String[] args) {
-        int opcao;
+        int opcao;        
         controlador.lerArquivoJSON();
         imprimirAutomato(controlador.getAFD());
 
         do {
             menuPrincipal();
             opcao = in.nextInt();
+            
             switch (opcao) {
                 case 0:
                     break;
