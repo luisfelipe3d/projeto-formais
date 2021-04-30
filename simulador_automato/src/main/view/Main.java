@@ -58,7 +58,7 @@ public class Main {
         }
     }
     
-    public static void argumentoMain(String[] arg){
+    private static void argumentoMain(String[] arg){
         if(arg.length == 0){
             controlador.lerArquivoJSON();
         } else if(arg.length == 1){
