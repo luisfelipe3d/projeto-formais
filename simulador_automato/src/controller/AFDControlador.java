@@ -1,6 +1,6 @@
 package controller;
 
-import model.EF;
+import main.model.EF;
 import java.util.Map;
 import java.util.List;
 import java.util.HashMap;
