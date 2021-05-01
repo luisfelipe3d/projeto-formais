@@ -1,5 +1,6 @@
 package main.view;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 import main.controller.AFDControlador;
@@ -8,27 +9,32 @@ public class Main {
     private static final Scanner in = new Scanner(System.in);
     private static final String ACCEPTED = "CADEIA ACEITA!";
     private static final String REJECTED = "CADEIA REJEITADA!";
+    private static final String INVALID = "OPÇÃO INVÁLIDA!";
     private static final AFDControlador controlador = new AFDControlador();
 
     public static void main(String[] args) {
-        int opcao;        
+        int opcao = 1;        
         controlador.lerArquivoJSON();
         imprimirAutomato(controlador.getAFD());
-
         do {
-            menuPrincipal();
-            opcao = in.nextInt();
-            
-            switch (opcao) {
-                case 0:
-                    break;
-                case 1:
-                    validarCadeia();
-                    break;
-                default:
-                    System.err.println("Opção inválida");
+            try {
+                menuPrincipal();
+                opcao = in.nextInt();
+                switch (opcao) {
+                    case 1:
+                        validarCadeia();
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        System.err.println(INVALID);
+                }
+            } catch (InputMismatchException ime) {
+                System.err.println(INVALID);
+            } finally {
+                in.nextLine(); // Limpa o buffer
             }
-        } while (opcao != 0);
+        } while(opcao != 0);
         in.close();
     }
 
