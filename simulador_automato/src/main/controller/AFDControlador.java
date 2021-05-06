@@ -22,19 +22,21 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class AFDControlador {
-    //alfabetoLinguagem armazena a linguagem do autômato lido
+    // alfabetoLinguagem armazena a linguagem do autômato lido
     private String alfabetoLinguagem;
 
-    //AFD é uma lista com todos os estados de um autômato
+    // AFD é uma lista com todos os estados de um autômato
     private final List<EF> AFD = new ArrayList();
 
-    //funcaoTransicaoEstadoAtual mapeia as funções de transição de um determinado estado
+    // funcaoTransicaoEstadoAtual mapeia as funções de transição de um determinado estado
     private Map<String, String> funcaoTransicaoEstadoAtual = new HashMap();
 
-    public void lerArquivoJSON(String caminho){
+    public void lerArquivoJSON(String path){
+        // acessa e lê o arquivo a partir do path informado
         JSONParser parser = new JSONParser();
+        
         try {
-            FileReader arquivoJSON = new FileReader(caminho);
+            FileReader arquivoJSON = new FileReader(path);
             JSONObject objetoJSON = (JSONObject) parser.parse(arquivoJSON);
             criarAutomato(objetoJSON);
         } catch (ParseException ex) {
@@ -46,7 +48,7 @@ public class AFDControlador {
         }
     }
     public void lerArquivoJSON() {
-        //acessa e lê o arquivo a partir do resources
+        // acessa e lê o arquivo a partir do resources
         InputStream inputStream = getClass().getResourceAsStream("/automato2.json");
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String arquivoJSON = bufferedReader.lines().collect(Collectors.joining(System.lineSeparator()));
@@ -62,7 +64,7 @@ public class AFDControlador {
     }
 
     private void criarAutomato(JSONObject arquivoJSON) {
-        //converte um array do JSONObect em JSONArray
+        // converte um array do JSONObect em JSONArray
         JSONArray arrayEstados = (JSONArray) arquivoJSON.get("Estados");
         JSONArray arrayAlfabeto = (JSONArray) arquivoJSON.get("Alfabeto");
         JSONArray arrayTransicoes = (JSONArray) arquivoJSON.get("Transicoes");
@@ -70,22 +72,22 @@ public class AFDControlador {
         this.alfabetoLinguagem = arrayAlfabeto.toJSONString();
         int qtdFuncoesTransicao = arrayAlfabeto.size();
 
-        //contador para as funções de transição
+        // contador para as funções de transição
         int n = 0;
 
         boolean estadoInicial;
         boolean estadoFinal;
 
         for (int i = 0; i < arrayEstados.size(); i++) {
-            //valida se o estado atual é inicial
+            // valida se o estado atual é inicial
             estadoInicial = arquivoJSON.get("EstadoInicial").equals(arrayEstados.get(i));
 
-            //valida se o estado atual é final
+            // valida se o estado atual é final
             estadoFinal = arrayEstadosFinais.contains(arrayEstados.get(i));
 
             AFD.add(new EF((String) arrayEstados.get(i), estadoInicial, estadoFinal));
             for (int j = 0; j < qtdFuncoesTransicao; j++) {
-                //regex retira " [ ] da String
+                // regex retira " [ ] da String
                 String funcaoTransicao = arrayTransicoes.get(n).toString().replaceAll("[\"\\[\\]]", "");
 
                 String[] arrayFuncaoTransicao = funcaoTransicao.split(",");

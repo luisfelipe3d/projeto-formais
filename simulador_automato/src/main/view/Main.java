@@ -2,21 +2,21 @@ package main.view;
 
 import main.controller.AFDControlador;
 
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
-
+import java.util.InputMismatchException;
 
 public class Main {
     private static final Scanner in = new Scanner(System.in);
-    private static final String ACCEPTED = "CADEIA ACEITA!";
-    private static final String REJECTED = "CADEIA REJEITADA!";
-    private static final String INVALID = "OPÇÃO INVÁLIDA!";
+    private static final int DEFAULT_VALUE = 1;
+    private static final String ACCEPTED_CHAIN = "CADEIA ACEITA!";
+    private static final String REJECTED_CHAIN = "CADEIA REJEITADA!";
+    private static final String INVALID_OPTION = "OPÇÃO INVÁLIDA!";
     private static final AFDControlador controlador = new AFDControlador();
 
     public static void main(String[] args) {
-        int opcao = 1;
-        argumentoMain(args);
+        int opcao = DEFAULT_VALUE;
+        argumentosMain(args);
         do {
             try {
                 menuPrincipal();
@@ -28,12 +28,12 @@ public class Main {
                     case 0:
                         break;
                     default:
-                        System.err.println(INVALID);
+                        System.err.println(INVALID_OPTION);
                 }
             } catch (InputMismatchException ime) {
-                System.err.println(INVALID);
+                System.err.println(INVALID_OPTION);
             } finally {
-                in.nextLine(); // Limpa o buffer
+                in.nextLine();
             }
         } while(opcao != 0);
         in.close();
@@ -46,7 +46,7 @@ public class Main {
     }
     
     private static String validarCadeia(String cadeia){
-        return controlador.validarCadeia(cadeia) ? ACCEPTED : REJECTED;
+        return controlador.validarCadeia(cadeia) ? ACCEPTED_CHAIN : REJECTED_CHAIN;
     }
     public static void validarCadeia() {
         System.out.print("Informe a cadeia: ");
@@ -60,15 +60,18 @@ public class Main {
         automatoLido.forEach(System.out::println);
     }
     
-    private static void argumentoMain(String[] arg){
+    private static void argumentosMain(String[] arg){
         switch (arg.length) {
             case 0:
+                // usuário não informa nenhum argumento
                 controlador.lerArquivoJSON();
                 break;
             case 1:
+                // usuário informa o path do arquivo JSON
                 controlador.lerArquivoJSON(arg[0]);
                 break;
             case 2:
+                // usuário informa o path do arquivo e a cadeia a ser validada
                 controlador.lerArquivoJSON(arg[0]);
                 System.out.println(validarCadeia(arg[1]));
                 break;
