@@ -24,7 +24,7 @@ import org.json.simple.parser.ParseException;
 public class AFDControlador {
     // alfabetoLinguagem armazena a linguagem do autômato lido
     private String alfabetoLinguagem;
-
+  
     // AFD é uma lista com todos os estados de um autômato
     private final List<EF> AFD = new ArrayList();
 
