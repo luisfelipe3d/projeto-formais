@@ -22,6 +22,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class AFDControlador {
+    private final String REGEX = "[\"\\[\\]]";
+    
     // alfabetoLinguagem armazena a linguagem do autômato lido
     private String alfabetoLinguagem;
   
@@ -31,7 +33,7 @@ public class AFDControlador {
     // funcaoTransicaoEstadoAtual mapeia as funções de transição de um determinado estado
     private Map<String, String> funcaoTransicaoEstadoAtual = new HashMap();
 
-    public void lerArquivoJSON(String path){
+    public void lerArquivoJSON(String path) {
         // acessa e lê o arquivo a partir do path informado
         JSONParser parser = new JSONParser();
         
@@ -87,10 +89,7 @@ public class AFDControlador {
 
             AFD.add(new EF((String) arrayEstados.get(i), estadoInicial, estadoFinal));
             for (int j = 0; j < qtdFuncoesTransicao; j++) {
-                // regex retira " [ ] da String
-                String funcaoTransicao = arrayTransicoes.get(n).toString().replaceAll("[\"\\[\\]]", "");
-
-                String[] arrayFuncaoTransicao = funcaoTransicao.split(",");
+                String[] arrayFuncaoTransicao = refatorarFuncaoTransicao(arrayTransicoes.get(n).toString());
                 AFD.get(i).addFuncaoTransicao(arrayFuncaoTransicao[1], arrayFuncaoTransicao[2]);
                 n++;
             }
@@ -100,7 +99,7 @@ public class AFDControlador {
     public boolean validarCadeia(String cadeia) {
         EF estadoAtual = AFD.get(0);
         funcaoTransicaoEstadoAtual = estadoAtual.getFuncaoTransicao();
-
+        
         // percorre a cadeia de elementos
         for (int i = 0; i < cadeia.length(); i++) {
             String nomeProximoEstado = (String) funcaoTransicaoEstadoAtual.get(Character.toString(cadeia.charAt(i)));
@@ -113,13 +112,8 @@ public class AFDControlador {
                     break;
                 }
             }
-
-            // if só é acessado na leitura no último elemento da cadeia
-            if (i == cadeia.length() - 1) {
-                return estadoAtual.isEstadoFinal();
-            }
         }
-        return false;
+        return estadoAtual.isEstadoFinal();
     }
 
     public List<EF> getAFD() {
@@ -128,5 +122,16 @@ public class AFDControlador {
 
     public String getAlfabetoLinguagem() {
         return this.alfabetoLinguagem;
+    }
+    
+    private String[] refatorarFuncaoTransicao(String funcaoTransicao){               
+        //retira " [ ] da String
+        String transicaoRefatorada = funcaoTransicao.replaceAll(REGEX, "");
+        return transicaoRefatorada.split(",");
+    }
+    
+    public String refatorarAlfabeto() {
+        String alfabetoRefatorado = this.alfabetoLinguagem.replaceAll(REGEX, "");
+        return alfabetoRefatorado.replaceAll(",", "");
     }
 }
