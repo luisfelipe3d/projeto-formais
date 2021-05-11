@@ -97,7 +97,7 @@ public class AFDControlador {
     public boolean validarCadeia(String cadeia) {
         EF estadoAtual = AFD.get(0);
         funcaoTransicaoEstadoAtual = estadoAtual.getFuncaoTransicao();
-
+        
         // percorre a cadeia de elementos
         for (int i = 0; i < cadeia.length(); i++) {
             String nomeProximoEstado = (String) funcaoTransicaoEstadoAtual.get(Character.toString(cadeia.charAt(i)));
@@ -110,13 +110,8 @@ public class AFDControlador {
                     break;
                 }
             }
-
-            // if só é acessado na leitura no último elemento da cadeia
-            if (i == cadeia.length() - 1) {
-                return estadoAtual.isEstadoFinal();
-            }
         }
-        return false;
+        return estadoAtual.isEstadoFinal();
     }
 
     public List<EF> getAFD() {
@@ -127,7 +122,7 @@ public class AFDControlador {
         return this.alfabetoLinguagem;
     }
     
-    private String[] limparString(String funcaoTransicao){
+    public String[] limparString(String funcaoTransicao){
         final String REGEX = "[\"\\[\\]]"; //retira " [ ] da String
         String aux = funcaoTransicao.replaceAll(REGEX, "");
         return aux.split(",");

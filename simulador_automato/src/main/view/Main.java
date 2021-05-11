@@ -48,10 +48,23 @@ public class Main {
     private static String validarCadeia(String cadeia){
         return controlador.validarCadeia(cadeia) ? ACCEPTED_CHAIN : REJECTED_CHAIN;
     }
-    public static void validarCadeia() {
+    public static void validarCadeia() {// alfabeto a,b ; cadeia = abc
+                                        // alfabeto a,b ; cadeia = 
         System.out.print("Informe a cadeia: ");
         String cadeia = in.next(); in.nextLine();
+        validarEntrada(cadeia);
         System.out.println(validarCadeia(cadeia));
+    }
+    
+    public static boolean validarEntrada(String cadeia) { // {a,b,b,a}
+        String alfabeto = controlador.getAlfabetoLinguagem(); //["a","b"]
+        String[] c = controlador.limparString(alfabeto); // {a,b}
+        for (char caractere : cadeia.toCharArray()) {
+            for (String elemento : c) {
+                
+            }
+        }
+        return true;
     }
     
     public static void imprimirAutomato(List automatoLido) {
