@@ -87,10 +87,7 @@ public class AFDControlador {
 
             AFD.add(new EF((String) arrayEstados.get(i), estadoInicial, estadoFinal));
             for (int j = 0; j < qtdFuncoesTransicao; j++) {
-                // regex retira " [ ] da String
-                String funcaoTransicao = arrayTransicoes.get(n).toString().replaceAll("[\"\\[\\]]", "");
-
-                String[] arrayFuncaoTransicao = funcaoTransicao.split(",");
+                String[] arrayFuncaoTransicao = limparString(arrayTransicoes.get(n).toString());
                 AFD.get(i).addFuncaoTransicao(arrayFuncaoTransicao[1], arrayFuncaoTransicao[2]);
                 n++;
             }
@@ -128,5 +125,11 @@ public class AFDControlador {
 
     public String getAlfabetoLinguagem() {
         return this.alfabetoLinguagem;
+    }
+    
+    private String[] limparString(String funcaoTransicao){
+        final String REGEX = "[\"\\[\\]]"; //retira " [ ] da String
+        String aux = funcaoTransicao.replaceAll(REGEX, "");
+        return aux.split(",");
     }
 }
