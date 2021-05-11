@@ -1,21 +1,22 @@
 package main.view;
 
-import java.util.InputMismatchException;
+import main.controller.AFDControlador;
+
 import java.util.List;
 import java.util.Scanner;
-import main.controller.AFDControlador;
+import java.util.InputMismatchException;
 
 public class Main {
     private static final Scanner in = new Scanner(System.in);
-    private static final String ACCEPTED = "CADEIA ACEITA!";
-    private static final String REJECTED = "CADEIA REJEITADA!";
-    private static final String INVALID = "OPÇÃO INVÁLIDA!";
+    private static final int DEFAULT_VALUE = 1;
+    private static final String ACCEPTED_CHAIN = "CADEIA ACEITA!";
+    private static final String REJECTED_CHAIN = "CADEIA REJEITADA!";
+    private static final String INVALID_OPTION = "OPÇÃO INVÁLIDA!";
     private static final AFDControlador controlador = new AFDControlador();
 
     public static void main(String[] args) {
-        int opcao = 1;        
-        controlador.lerArquivoJSON();
-        imprimirAutomato(controlador.getAFD());
+        int opcao = DEFAULT_VALUE;
+        argumentosMain(args);
         do {
             try {
                 menuPrincipal();
@@ -27,35 +28,78 @@ public class Main {
                     case 0:
                         break;
                     default:
-                        System.err.println(INVALID);
+                        System.err.println(INVALID_OPTION);
                 }
             } catch (InputMismatchException ime) {
-                System.err.println(INVALID);
+                System.err.println(INVALID_OPTION);
             } finally {
-                in.nextLine(); // Limpa o buffer
+                in.nextLine();
             }
-        } while(opcao != 0);
+        } while (opcao != 0);
         in.close();
     }
 
-    public static void menuPrincipal() {
+    private static void menuPrincipal() {
         System.out.println("1 - Validar cadeia de elementos");
         System.out.println("0 - Encerrar");
         System.out.print("Escolha a opção desejada: ");
     }
-    
+
+    private static String validarCadeia(String cadeiaLida) {
+        if (!validarEntrada(cadeiaLida)) {
+            return INVALID_OPTION;
+        }
+        
+        return controlador.validarCadeia(cadeiaLida) ? ACCEPTED_CHAIN : REJECTED_CHAIN;
+    }
+
     public static void validarCadeia() {
         System.out.print("Informe a cadeia: ");
-        String cadeia = in.next(); in.nextLine();
-        String resultado = controlador.validarCadeia(cadeia) ? ACCEPTED : REJECTED;
+        String cadeiaLida = in.next(); in.nextLine();
         
-        System.out.println(resultado);
-    }
-    
-    public static void imprimirAutomato(List automatoLido) {
-        System.out.println("Alfabeto da linguagem: " + controlador.getAlfabetoLinguagem());
-        for (int i = 0; i < automatoLido.size(); i++) {
-            System.out.println(automatoLido.get(i));
+        if (!validarEntrada(cadeiaLida)) {
+            System.err.println(INVALID_OPTION);
+            return;
         }
+        
+        System.out.println(validarCadeia(cadeiaLida));
+    }
+
+    public static boolean validarEntrada(String cadeiaLida) {
+        String alfabetoLinguagem = controlador.refatorarAlfabeto();
+
+        for (int i = 0; i < cadeiaLida.length(); i++) {
+            if (!alfabetoLinguagem.contains(cadeiaLida.subSequence(i, i+1))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void imprimirAutomato(List automatoLido) {
+        final String alfabeto = controlador.getAlfabetoLinguagem();
+        System.out.println("Alfabeto da linguagem: " + alfabeto);
+        automatoLido.forEach(System.out::println);
+    }
+
+    private static void argumentosMain(String[] arg) {
+        switch (arg.length) {
+            case 0:
+                // usuário não informa nenhum argumento
+                controlador.lerArquivoJSON();
+                break;
+            case 1:
+                // usuário informa o path do arquivo JSON
+                controlador.lerArquivoJSON(arg[0]);
+                break;
+            case 2:
+                // usuário informa o path do arquivo e a cadeia a ser validada
+                controlador.lerArquivoJSON(arg[0]);
+                System.out.println(validarCadeia(arg[1]));
+                break;
+            default:
+                break;
+        }
+        imprimirAutomato(controlador.getAFD());
     }
 }
