@@ -35,7 +35,7 @@ public class Main {
             } finally {
                 in.nextLine();
             }
-        } while(opcao != 0);
+        } while (opcao != 0);
         in.close();
     }
 
@@ -44,36 +44,45 @@ public class Main {
         System.out.println("0 - Encerrar");
         System.out.print("Escolha a opção desejada: ");
     }
-    
-    private static String validarCadeia(String cadeia){
-        return controlador.validarCadeia(cadeia) ? ACCEPTED_CHAIN : REJECTED_CHAIN;
+
+    private static String validarCadeia(String cadeiaLida) {
+        if (!validarEntrada(cadeiaLida)) {
+            return INVALID_OPTION;
+        }
+        
+        return controlador.validarCadeia(cadeiaLida) ? ACCEPTED_CHAIN : REJECTED_CHAIN;
     }
-    public static void validarCadeia() {// alfabeto a,b ; cadeia = abc
-                                        // alfabeto a,b ; cadeia = 
+
+    public static void validarCadeia() {
         System.out.print("Informe a cadeia: ");
-        String cadeia = in.next(); in.nextLine();
-        validarEntrada(cadeia);
-        System.out.println(validarCadeia(cadeia));
+        String cadeiaLida = in.next(); in.nextLine();
+        
+        if (!validarEntrada(cadeiaLida)) {
+            System.err.println(INVALID_OPTION);
+            return;
+        }
+        
+        System.out.println(validarCadeia(cadeiaLida));
     }
-    
-    public static boolean validarEntrada(String cadeia) { // {a,b,b,a}
-        String alfabeto = controlador.getAlfabetoLinguagem(); //["a","b"]
-        String[] c = controlador.limparString(alfabeto); // {a,b}
-        for (char caractere : cadeia.toCharArray()) {
-            for (String elemento : c) {
-                
+
+    public static boolean validarEntrada(String cadeiaLida) {
+        String alfabetoLinguagem = controlador.refatorarAlfabeto();
+
+        for (int i = 0; i < cadeiaLida.length(); i++) {
+            if (!alfabetoLinguagem.contains(cadeiaLida.subSequence(i, i+1))) {
+                return false;
             }
         }
         return true;
     }
-    
+
     public static void imprimirAutomato(List automatoLido) {
         final String alfabeto = controlador.getAlfabetoLinguagem();
         System.out.println("Alfabeto da linguagem: " + alfabeto);
         automatoLido.forEach(System.out::println);
     }
-    
-    private static void argumentosMain(String[] arg){
+
+    private static void argumentosMain(String[] arg) {
         switch (arg.length) {
             case 0:
                 // usuário não informa nenhum argumento

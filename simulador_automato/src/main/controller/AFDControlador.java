@@ -22,6 +22,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class AFDControlador {
+    private final String REGEX = "[\"\\[\\]]";
+    
     // alfabetoLinguagem armazena a linguagem do autômato lido
     private String alfabetoLinguagem;
   
@@ -31,7 +33,7 @@ public class AFDControlador {
     // funcaoTransicaoEstadoAtual mapeia as funções de transição de um determinado estado
     private Map<String, String> funcaoTransicaoEstadoAtual = new HashMap();
 
-    public void lerArquivoJSON(String path){
+    public void lerArquivoJSON(String path) {
         // acessa e lê o arquivo a partir do path informado
         JSONParser parser = new JSONParser();
         
@@ -87,7 +89,7 @@ public class AFDControlador {
 
             AFD.add(new EF((String) arrayEstados.get(i), estadoInicial, estadoFinal));
             for (int j = 0; j < qtdFuncoesTransicao; j++) {
-                String[] arrayFuncaoTransicao = limparString(arrayTransicoes.get(n).toString());
+                String[] arrayFuncaoTransicao = refatorarFuncaoTransicao(arrayTransicoes.get(n).toString());
                 AFD.get(i).addFuncaoTransicao(arrayFuncaoTransicao[1], arrayFuncaoTransicao[2]);
                 n++;
             }
@@ -122,9 +124,14 @@ public class AFDControlador {
         return this.alfabetoLinguagem;
     }
     
-    public String[] limparString(String funcaoTransicao){
-        final String REGEX = "[\"\\[\\]]"; //retira " [ ] da String
-        String aux = funcaoTransicao.replaceAll(REGEX, "");
-        return aux.split(",");
+    private String[] refatorarFuncaoTransicao(String funcaoTransicao){               
+        //retira " [ ] da String
+        String transicaoRefatorada = funcaoTransicao.replaceAll(REGEX, "");
+        return transicaoRefatorada.split(",");
+    }
+    
+    public String refatorarAlfabeto() {
+        String alfabetoRefatorado = this.alfabetoLinguagem.replaceAll(REGEX, "");
+        return alfabetoRefatorado.replaceAll(",", "");
     }
 }
